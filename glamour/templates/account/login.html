@@ -1,0 +1,89 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+{% load account socialaccount %}
+
+
+{% block head_title %}{% trans "Sign In" %}{% endblock %}
+
+{% block content %}
+
+  {% get_providers as socialaccount_providers %}
+
+
+  {% comment %} <form class="login" method="POST" action="{% url 'account_login' %}"> {% endcomment %}
+    {% comment %} 
+    
+    
+   
+  </form> {% endcomment %}
+<div class="form-container ">
+  <div class = "row shadow" >
+    <div class = "col-lg-9 col-sm-12">
+    <h1 class = "text-center color-primary">{% trans "LOGIN" %}</h1>
+    {% for error in form.non_field_errors  %}
+        <span class = "alert alert-danger text-center d-block m-auto"> {{error}} </span>
+    {% endfor %}
+    {% comment %} {{ form.as_p }} {% endcomment %}
+    <form class="login p-lg-4 mt-4 mt-md-0"  method="POST" action="{% url 'account_login' %}">
+      <div class="form-group ">
+      {% csrf_token %}
+        {% comment %} <label class = "color-primary" for="id_login">Name</label> {% endcomment %}
+        <input placeholder = "Name" name = "login" autocomplete = "username"  id = "id_login" maxlength = "150" class="form-control" type="text"/>
+        {% for error in form.login.errors %}
+        <small class = "text-danger ">{{error}}</small>
+        {% endfor %}
+      </div>
+      <div class="form-group">
+        {% comment %} <label class = "color-primary"  for="id_password">Password</label> {% endcomment %}
+        <input placeholder = "Password" name = "password" autocomplete = "current-password"   id = "id_password" maxlength = "150" class="form-control" type="password"/>
+        {% for error in form.password.errors %}
+        <small class = "text-danger text-decoration-none ">{{error}}</small>
+        {% endfor %}
+      </div>
+      <div class = "d-flex justify-content-between">
+      <span>
+        <input type="checkbox" name="remember" id="id_remember">
+        <label class = "color-primary" for="id_remember">Remember Me</label>
+        {% for error in form.remember.errors %}
+        <small class = "text-danger ">{{error}}</small>
+        {% endfor %}
+      </span>
+      <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot?" %}</a>
+      </div>
+      
+      <button class="primaryAction d-block btn m-auto w-50 color-primary " type="submit">{% trans "LOGIN" %}</button>
+      
+      {% if redirect_field_value %}
+      <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+      {% endif %}
+      {% if socialaccount_providers %}
+      <p>{% blocktrans with site.name as site_name %}Please sign in with one
+      of your existing third party accounts. Or, <a href="{{ signup_url }}">sign up</a>
+      for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
+
+      <div class="socialaccount_ballot">
+
+        <ul class="socialaccount_providers">
+          {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+        </ul>
+
+        <div class="login-or">{% trans 'or' %}</div>
+
+      </div>
+
+      {% include "socialaccount/snippets/login_extra.html" %}
+
+      {% else %}
+      <p class = "text-muted text-center mt-2">{% blocktrans %}Not registered yet?
+      <a class ="secondaryAction" href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>
+      {% endif %}
+    </form>
+    </div>
+    <div class = "col-lg-3 d-lg-inline d-sm-none p-0 login-image">
+      <img src = "/media/web_images/5-02.jpg" class = "login-image" >
+    </div>
+  </div>
+</div>
+{% endblock content %}
+

@@ -1,0 +1,32 @@
+{% load counter %}
+<nav class = "navbar navbar-expand-sm colorbg-secondary shadow-sm sticky-top">
+    <div class = "my-container  d-flex justify-content-between ">
+            <!-- Search form -->
+        <form class="form-inline">
+            <input class="form-control color-primary-nav  search-box" type="text" aria-label="Search">
+            <button class="btn search-btn" type="submit"><i class="fas fa-search"></i></button>
+        </form>
+        <a href = "{% url 'core:home' %}" class = "navbar-brand color-primary-nav ">Glamour</a>
+        <ul  class="nav navbar-nav justify-content-between ">
+            {% if user.is_authenticated %}
+            <li class = "nav-item px-1">
+                <a href="{% url 'account_logout' %}" class = "nav-link color-primary-nav"  data-toggle="tooltip" data-placement="bottom" title="Sign Out" ><i class="fas fa-sign-out-alt"></i></a>              
+            </li>
+            {% else %}
+            <li class = "nav-item dropdown-toggler px-1" role="">
+                <a href="{% url 'account_login' %}" class = "nav-link color-primary-nav" data-toggle="tooltip" data-placement="bottom" title="Sign in" ><i class="fas fa-sign-in-alt"></i></a>
+            </li>
+            {% endif %}
+            
+            <li class = "nav-item px-1">
+                <a class = "nav-link color-primary-nav" data-toggle="tooltip" data-placement="bottom" title="About Us"><i class="fas fa-address-card"></i></a>
+            </li>
+            <li class = "nav-item px-1 last-item">
+                <a href = "{% url 'core:cart' %}" class = "nav-link color-primary-nav" data-toggle="tooltip" data-placement="bottom" title="Cart" ><i class="fas fa-shopping-cart mr-1"></i>
+                    <span class="badge badge-danger colorbg-alternate cart-counter z-depth-1 mr-1">{{ user|counter }}</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+</nav>

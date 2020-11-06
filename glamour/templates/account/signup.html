@@ -1,0 +1,58 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Signup" %}{% endblock %}
+
+{% block content %}
+<div class="form-container ">
+  <div class = "row shadow" >
+    <div class = "col-lg-12 col-sm-12">
+      <h1 class = "text-center color-primary">{% trans "Sign In" %}</h1>
+      {% for error in form.non_field_errors  %}
+        <span class = "alert alert-danger text-center d-block m-auto"> {{error}} </span>
+      {% endfor %}
+      <form class="signup p-lg-4 mt-4 mt-md-0" id="signup_form" method="POST" action="{% url 'account_signup' %}">
+        {% csrf_token %}
+        <div class="form-group">
+          <input placeholder = "USERNAME" class="form-control" type="text" name="username" autocomplete="username" minlength="1" maxlength="150" required="" id="id_username">
+          {% for error in form.username.errors %}
+          <small class = "text-danger text-decoration-none ">{{error}}</small>
+          {% endfor %}
+        </div>
+
+        <div class="form-group">
+          <input placeholder = "E-mail (optional)"  class="form-control" type="email" name="email"  autocomplete="email" id="id_email">
+          {% for error in form.email.errors %}
+          <small class = "text-danger text-decoration-none ">{{error}}</small>
+          {% endfor %}
+        </div>
+
+        <div class="form-group">
+          <input placeholder = "PASSWORD" class="form-control" type="password" name="password1" autocomplete="new-password" required="" id="id_password1">
+          {% for error in form.password1.errors %}
+          <small class = "text-danger text-decoration-none ">{{error}}</small>
+          {% endfor %}
+        </div>
+
+        <div class="form-group">
+          <input placeholder = "PASSWORD (AGAIN)" class="form-control" type="password" name="password2"  required="" id="id_password2">
+          {% for error in form.password2.errors %}
+          <small class = "text-danger text-decoration-none ">{{error}}</small>
+          {% endfor %}
+        </div>
+        {% comment %} {{ form.as_p }} {% endcomment %}
+        {% if redirect_field_value %}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+        {% endif %}
+        <button class="d-block btn m-auto w-50 color-primary " type="submit">{% trans "Sign Up" %} &raquo;</button>
+        <p class = "text-muted text-center mt-2" >{% blocktrans %}Already have an account? Then please <a class ="secondaryAction" href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
+      </form>
+    </div>
+    {% comment %} <div class = "signup-image col-lg-4 col-0">
+    </div> {% endcomment %}
+  </div>
+</div>
+
+
+{% endblock %}

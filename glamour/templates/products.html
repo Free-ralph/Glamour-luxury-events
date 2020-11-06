@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% block content %}
+<!--card container-->
+<div class = "card-container m-auto mt-4">
+    <!--row-->
+    <div class = "row justify-content-around mt-1 pt-2 pr-4 pl-4">
+        <!--column -->
+        {% for item in items %}
+        <!--column-->
+        <div class ="col-lg-4 col-sm-12">
+            <!--Card-->
+            <div class="card card-cascade card-ecommerce color-secondary wider">
+                <!--Card image-->
+                <div class="view view-cascade card-img-container">
+                    <img class="img-fluid" src="{{item.image.url}}"
+                    alt="">
+                    {% comment %} <a>
+                    <div class="mask rgba-white-slight"></div>
+                    </a> {% endcomment %}
+                </div>
+                <!--/.Card image-->
+                <!--Card content-->
+                <div class="card-body card-body-cascade text-center">
+                    <!--Category & Title-->
+                    <h5>{{item.category}}</h5>
+                    <h4 class="card-title "><strong><a href = "{% url 'core:product_detail' item.slug %}" class = "color-secondary" > {{item.title}} </a></strong></h4>
+                    <!--Card footer-->
+                    <div class="card-footer color-secondary">
+                        <span class="float-left"> {{item.price}} $</span>
+                        <span class="float-right">
+                            <a data-toggle="tooltip" data-placement="top" title="Share"><i class="fas fa-share-alt mr-3"></i></a>
+                            <a {% if item.whishlist  %} class="active" {% endif %} data-toggle="tooltip" data-placement="top" title="Added to Wishlist"><i class="fas fa-heart"></i></a>
+                        </span>
+                    </div>
+                    <!--add to cart-->
+                    <a href = "{% url 'core:add_single_item_to_cart' item.slug %}"  class="btn add-to-cart-btn colorbg-secondary mt-2 w-100">Add to cart</a>
+                </div>
+                <!--/.Card content-->
+            </div>
+            <!--/.Card-->
+        {% if forloop.counter|divisibleby:3 %}
+        </div>
+        <!--column-->
+    </div>
+    <!--row-->
+    <div class = "row justify-content-around mt-1 pt-2 pr-4 pl-4" >
+        {% else %}
+        </div>
+        <!--column-->
+        {% endif %}
+
+        {% endfor %}
+        <!--column -->
+        </div>
+        <!--row-->
+</div>
+<!--card container-->
+    {% if is_paginated %}
+ <!--Pagination-->
+      <nav class="d-flex justify-content-center mt-4">
+        <ul class="pagination pg-blue">
+    
+          <!--Arrow left-->
+          {% if page_obj.has_previous %}
+          <li class="page-item ">
+            <a class="page-link color-secondary" href="?page={{page_obj.previous_page_number}}" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+              <span class="sr-only">Previous</span>
+            </a>
+          </li>
+          {% endif %}
+        {% for num in page_obj.paginator.page_range %}
+            {% if num == page_obj.number %}
+            <li class="page-item ">
+                <a class="page-link my-active" href="?page={{num}}">{{num}}
+                <span class="sr-only">(current)</span>
+                </a>
+            </li>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+            <li class="page-item ">
+                <a class="page-link color-secondary" href="?page={{num}}">{{num}}
+                <span class="sr-only">(current)</span>
+                </a>
+            </li>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link  color-secondary" href="?page={{page_obj.next_page_number}}" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">Next</span>
+            </a>
+          </li>
+        {% endif %}
+        </ul>
+      </nav>
+      <!--Pagination-->
+    {% endif %}
+{% endblock content %}

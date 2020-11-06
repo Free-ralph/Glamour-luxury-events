@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class = "my-container">
+    <h2 class = "color-secondary text-center">Hello {% if user.is_authenticated %}{{user.username}}{% else %}There{% endif %}
+    , welcome to <span class = "color-primary font-weight-bold">Glamoury Luxury Events</span> gift curating services</h2>
+    <h5 class = "text-center color-secondary"> 
+        Here you have the liberty of assembling your own gift box.
+        please read through the following instructions
+    </h5>
+    <div class = "instruction-container d-flex flex-column">
+        <ul class = "color-secondary d-inline m-auto">
+            <li>All items available for curating will be displayed after clicking on the "Create button" <br>
+            <span class = "text-muted">PS: if you already have an active box you can continue curating</span></li>
+            <li>Click on the "add to box" button to add choosen items to your custom "Glomoury gift box"</li>
+            <li>All selected items will be displayed in your "Glomoury gift box" area. Oh!! and ofcourse you have the liberty to remove any item at will</li>
+            <li>Items available for sale here in Glamoury Luxury Events can also be added to your "Glamoury gift box"</li>
+            <li>When satisfied, click the "curate" button to successfully curate your gift box</li>
+            <li>Finally, add your custom "Glamoury gift box" to your cart for checkout, payment and delivery</li>
+        </ul>
+    {% if gift_box %}
+    <a class = "btn colorbg-secondary add-to-cart-btn w-25 m-auto" href = "{% url 'core:gift_box' %}"><i class="fas fa-gifts "><span class = "ml-2">COUNTINUE CURATING</span></i></a>
+    {% else %}
+    <a class = "btn colorbg-secondary add-to-cart-btn w-25 m-auto" href = "{% url 'core:create_gift_box' %}"><i class="fas fa-gifts "><span class = "ml-2">CREATE GIFT BOX</span></i></a>
+    {% endif %}  
+    </div>
+</div>
+{% endblock content %}

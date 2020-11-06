@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class = "my-container">
+    <h2 class = "text-center">Welcome to your gift box</h2>
+    <div class ="row ">
+        <div class = "col-4 gift-box d-flex colorbg-secondary ">
+        <p class = "help text-muted position-absolute text-center ">Every item you select will be displayed here</p>
+        {% if gift_box.GiftItem.exists %}
+        <p class = "">Stuff is in hear</p>
+        {% else %}
+        <p class = "text-muted text-center align-self-center w-100 color-primary">You do not have any gifts in our box yet</p>
+        {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock content %}
