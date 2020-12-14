@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class = "container">
+    {% comment %} <div class="modal fade" id = "food_tray" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header  colorbg-secondary">
+                    <h5 class="modal-title color-primary">ADD FOOD TRAY</h5>
+                    <button type="button" class="close" style="color:white;" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                <div class="modal-body">
+                    <form class = "form-group" method= "POST">
+                        {% csrf_token %}
+                        {{form}}
+                        <div class = "row">
+                            <div class = "col-sm-12 col-lg-6">
+                                <label for="id_Tray">Tray:</label>
+                                <select class = "w-100" name="Tray" id="id_Tray">
+                                    {% for value , name in form.fields.Tray.choices %}
+                                    <option class = "colorbg-secondary color-primary" value="{{value}}">{{name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class = "col-sm-12 col-lg-6 mb-2">
+                                <label for="id_tray_type">Tray type:</label>
+                                <select class = "w-100" name="tray_type" id="id_tray_type">
+                                    {% for value , name in form.fields.tray_type.choices %}
+                                    <option class = "colorbg-secondary color-primary"value="{{value}}">{{name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div><br>
+                           
+                            <button class = "btn m-auto w-50 text-center colorbg-secondary add-to-cart-btn" type = "Submit">Show Tray Constituents</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div> {% endcomment %}
+    {% comment %} <h2 class = "text-center">Welcome to your gift box</h2> {% endcomment %}
+    <div class ="row h-100 mt-4">
+        <div class = "col-12 gift-box colorbg-secondary ">
+            <div class = "d-flex flex-column position-relative">
+                {% if tray_cart.tray_item.exists %}
+                {% for tray in tray_cart.tray_item.all %}
+                <span class = "border border-primary">
+                    <p class = "color-primary">{{tray}}<span class = "ml-4">{{tray.tray.food_items}}</span></p>
+                    <span class = "border border-warning d-flex flex-row">
+                    {% if tray.add_ons %}
+                        {% for add_on in tray.add_ons.all %}
+                        <p class = "color-primary">{{add_on}}</p>
+                        {% endfor %}
+                    {% endif %}
+                    </span>
+                <a class = "btn btn-primary" href="{% url 'gift:edit_food_tray' tray.pk %}">EDIT</a>
+                </span>
+                {% endfor %}
+                {% else %}
+                <small class = "help text-light position-absolute text-center ">Every item you select will be displayed here</small>
+                <p class = "text-muted text-center align-self-center w-100 color-primary">You do not have any tray in your tray cart area yet</p>
+                {% endif %}
+                <nav class = "nav navbar-expand-sm mini-nav colorbg-primary position-absolute" >
+                    <ul class="nav navbar-nav w-100 d-flex justify-content-around ">
+                        <li class = "nav-item"><a href = "{% url 'gift:food_tray' %}"><i class="fas fa-utensils"></i>Food Tray</a></li>
+                        <li class = "nav-item"><a data-toggle="tooltip" data-placement="bottom" title="Event Planning/Managemnt" class = "nav-link color-secondary" href="#"><i class="fas fa-apple-alt"></i> Fruit Tray</a></li>
+                        <li  class=" nav-item active"><a data-toggle="tooltip" data-placement="bottom" title="More services" class = "nav-link color-secondary" href="#"><i class="fas fa-caret-square-down"></i></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

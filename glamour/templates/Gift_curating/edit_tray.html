@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h3>Here are the contents for {{tray_item.tray.get_tray_name_display}} {{tray_item.tray.get_tray_type_display}} Tray</h3>
+<p class = "w-100 border border-primary">{{tray_item.tray.food_items}}</p>
+<p class = "border border-danger d-inline mt-2">{{tray_item.tray.get_price}}</p>
+<form class ="form-group" method = "POST">
+    {% csrf_token %}
+    <h3>Do want to change the tray?</h3>
+    <label for="id_Tray">Tray:</label>
+    <select name="Tray" id="id_Tray">
+        {% for value , name in form.Tray.field.choices %}
+        <option class = "colorbg-secondary color-primary" value="{{value}}">{{name}}</option>
+        {% endfor %}
+    </select>
+    <label for="id_tray_type">Tray type:</label>
+    <select name="tray_type" id="id_tray_type">
+        {% for value , name in form.tray_type.field.choices %}
+        <option class = "colorbg-secondary color-primary"value="{{value}}">{{name}}</option>
+        {% endfor %}
+    </select>
+    
+    <button type = "submit" class = "btn btn-primary" >CHANGE</button>
+</form>
+<form class = "form-group" action = "{% url 'gift:update_add_on_quantity' tray_item.tray.pk %}" method = "POST">
+{% csrf_token %}
+     <label>Add ons:</label>
+            {% if  tray_item.add_ons.all %}
+            <h2>here are your selected add ons</h2>
+            {% for tray_add_ons in tray_item.add_ons.all  %}
+                <div> 
+                    {{tray_add_ons.add_on.add_on_name}} <span class "border border-primary ml-3" >{{tray_add_ons.add_on.get_price}}</span> <a class = "ml-3" href = "{% url 'gift:remove_addons' tray_add_ons.pk %}" class="color-secondary trash"><i class="fa fa-trash"></i></a>
+                </div>
+                <input required type="number" name = "quantity_{{tray_add_ons.add_on.add_on_name}}"value="{{tray_add_ons.quantity}}" aria-label="Search" class="form-control color-secondary  mr-2" style="width: 100px" min="1" >
+            {% endfor %}
+            <p> total price: {{tray_item.get_total_price}} </p>
+            {% endif %}
+        <button class = "btn btn-primary" type = "submit"> update </button>
+</form>
+<form class = "form-group" method = "POST" action = "{% url 'gift:add_addon' tray_item.pk %}">
+{% csrf_token %}
+    <h2>What else would you like to add: </h2>
+    <ul>
+    {% for add_on in unselected_add_on %}
+        <li>
+            <label for="{{add_on.value_id}}">
+                <input class = "mr-2" type="checkbox" name="add_ons" value="{{add_on.value_id}}" id="{{add_on.value_id}}">{{add_on.add_on_name}}
+            </label>    
+            <p> {{add_on.get_price}} </p>
+            <input required type="number" name = "quantity_{{add_on.add_on_name}}"value="1" aria-label="Search" class="form-control color-secondary  mr-2" style="width: 100px" min="1" >            
+        </li>
+    {% endfor %}
+    </ul>
+    <button type = "submit" class = "btn btn-primary" >ADD</button>
+</form>
+
+{% endblock content %}

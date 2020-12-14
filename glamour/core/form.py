@@ -1,11 +1,13 @@
 from django import forms
 
-
 PILLOW_SIZES = (
     ('F' , '16inches') ,
     ('S' , '18inches') ,
     ('T' , '20inches') 
 )
+
+    
+
 
 class QuantityForm(forms.Form):
     quantity = forms.IntegerField()
@@ -24,4 +26,6 @@ class CouponForm(forms.Form):
 
 class Sizes(forms.Form):
     sizes = forms.ChoiceField(choices=PILLOW_SIZES)
+
+
 

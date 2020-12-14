@@ -34,7 +34,7 @@
             <div class = "my-container shadow">
                 <nav class = "nav navbar-expand-sm mini-nav colorbg-secondary mt-2" >
                     <ul class="nav navbar-nav w-100 d-flex justify-content-around ">
-                        <li class = "nav-item"><a data-toggle="tooltip" data-placement="bottom" title="Gift Curating" class = "nav-link color-primary" href="{% url 'core:gift_curating' %}"><i class="fas fa-gifts"></i></a></li>
+                        <li class = "nav-item"><a data-toggle="tooltip" data-placement="bottom" title="Gift Curating" class = "nav-link color-primary" href="{% url 'gift:gift_curating' %}"><i class="fas fa-gifts"></i></a></li>
                         <li class = "nav-item"><a data-toggle="tooltip" data-placement="bottom" title="Event Planning/Managemnt" class = "nav-link color-primary" href="#"><i class="fas fa-calendar-alt"></i></a></li>
                         <li  class=" nav-item active"><a data-toggle="tooltip" data-placement="bottom" title="More services" class = "nav-link color-primary" href="#"><i class="fas fa-caret-square-down"></i></a></li>
                     </ul>
@@ -94,11 +94,12 @@
                         {% endfor %}
                     </div>
                     <!--row-->
-
-                    
+            
+                    {% if items.count > 3 %}
                     <div class = "w-25 mx-auto my-2">
                         <a href="{% url 'core:product_view' %}" class = "more-btn btn w-100 text-center color-secondary ">Click for more items</a>
                     </div>
+                    {% endif %}
                 </div>
                 <!--card container-->
             </div>  

@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     # myapps
     'core' ,
+    'gift_curator',
 ]
 
 MIDDLEWARE = [
@@ -84,8 +85,12 @@ WSGI_APPLICATION = 'glamour.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'glamour2',
+        'USER' : 'glamour',
+        'PASSWORD' : 'glamour',
+        'PORT' : 3306 ,
+        'HOST' : '127.0.0.1',
     }
 }
 

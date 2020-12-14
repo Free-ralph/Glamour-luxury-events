@@ -310,12 +310,33 @@ input:focus[type = 'text']{
 
 .gift-box{
     border: solid 4px #333238;
-    height: 70vh;
+    padding: 20px;
 }
-
+.gift-box div {
+    width: 100%;
+    height: 450px;
+    border: solid 3px #f6bd90;
+    border-radius: 10px;
+}
+.gift-box img{
+    bottom: -45px;
+    right: -45px;
+}
+.gift-box nav{
+    bottom: 40px;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+}
 .help{
     top: -25px;
     width: 100%;
+}
+.Add-ons{
+    list-style: none !important;
+}
 /* @media only screen and (max-width: 768px){
 
     .form-container{

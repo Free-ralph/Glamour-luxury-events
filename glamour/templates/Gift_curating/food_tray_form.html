@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+{% if tray %}
+<h3>Here are the contents for {{tray.get_tray_name_display}} {{tray.get_tray_type_display}} Tray</h3>
+<p class = "w-100 border border-primary">{{tray.food_items}}</p>
+
+<form class ="form-group" method = "POST">
+    {% csrf_token %}
+    <h3>Do want to change the tray?</h3>
+    <label for="id_Tray">Tray:</label>
+    <select name="Tray" id="id_Tray">
+        {% for value , name in form.Tray.field.choices %}
+        <option class = "colorbg-secondary color-primary" value="{{value}}">{{name}}</option>
+        {% endfor %}
+    </select>
+    <label for="id_tray_type">Tray type:</label>
+    <select name="tray_type" id="id_tray_type">
+        {% for value , name in form.tray_type.field.choices %}
+        <option class = "colorbg-secondary color-primary"value="{{value}}">{{name}}</option>
+        {% endfor %}
+    </select>
+    
+    <button type = "submit" class = "btn btn-primary" >CHANGE</button>
+</form>
+<form class = "form-group" action = "{% url 'gift:add_to_tray_cart' tray.pk %}" method = "POST">
+    {% csrf_token %}
+    {% comment %} {{form}} {% endcomment %}
+    
+    <h5 class = "ml-3 mt-2">What else would you like to add:</h5>
+        <div class = "col-lg-12 ">
+            <label>Add ons:</label>
+            <ul class = "Add-ons" id="id_add_ons">
+            {% for value , name in form.add_ons.field.choices %}
+                <li>
+                    <label for="{{value}}">
+                        <input class = "mr-2" type="checkbox" name="add_ons" value="{{value}}" id="{{value}}">{{name}}
+                    </label>    
+                </li>
+                <input required type="number" name = "quantity_{{name}}" value="1" aria-label="Search" class="form-control color-secondary  mr-2" style="width: 100px" min="1" >
+            {% endfor %}
+            </ul>
+        </div>
+    <button type = "submit" class = "btn btn-primary" >CURATE</button>
+</form>
+{% else %}
+<form class = "form-group" method = "POST">
+    {% csrf_token %}
+    {% comment %} {{form}} {% endcomment %}
+    <label for="id_Tray">Tray:</label>
+    <select name="Tray" id="id_Tray">
+        {% for value , name in form.Tray.field.choices %}
+        <option class = "colorbg-secondary color-primary" value="{{value}}">{{name}}</option>
+        {% endfor %}
+    </select>
+    <label for="id_tray_type">Tray type:</label>
+    <select name="tray_type" id="id_tray_type">
+        {% for value , name in form.tray_type.field.choices %}
+        <option class = "colorbg-secondary color-primary"value="{{value}}">{{name}}</option>
+        {% endfor %}
+    </select>
+    <button type = "submit" class = "btn btn-primary" >SUBMIT</button>
+</form>
+
+{% endif %}
+
+{% endblock content %}

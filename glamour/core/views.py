@@ -1,9 +1,12 @@
 from django.shortcuts import render , get_object_or_404 , redirect
 from django.views.generic import ListView , DetailView , View
-from .models import Item , OrderItem , Order , Coupon , GiftBox
+from .models import  Coupon , Item , OrderItem , Order 
 from .form import QuantityForm , CouponForm , InstructionForm ,Sizes
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
+from django.urls import reverse
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 
@@ -45,6 +48,9 @@ class Orderdetail(View):
                 footer = False
                 if not order.orderitems.exists():
                     footer = True
+            else : 
+                order = False
+                footer = True
             
             context = { "order" : order ,
                     "footer" : footer ,
@@ -56,10 +62,6 @@ class Orderdetail(View):
             return render(request , 'order_detial.html' , context)
         
         
-        
-
-        
-    
     def post(self , request , *args, **kwargs):
         form = CouponForm(request.POST or None)
         form_instruct = InstructionForm(request.POST or None)
@@ -109,48 +111,13 @@ class Orderdetail(View):
             messages.warning(request , 'Please enter valid coupon detail')
             return redirect('core:cart')
 
-class GiftCurating(View):
-    def get(self , request , *args, **kwargs):
-        gift_box_qs = GiftBox.objects.filter(   user = request.user , 
-                                                ordered = False)
-        if gift_box_qs.exists():
-            gift_box = gift_box_qs[0]
-        else :
-            gift_box = False
-        context = { 'footer' : True ,
-                    "gift_box" : gift_box}
-        return render(request, 'Gift_curating/base.html' , context)
-
-class GiftBoxArea(View):
-    def get(self ,  request , *args, **kwargs):
-        gift_box_qs = GiftBox.objects.filter(   user = request.user , 
-                                                ordered = False)
-        if gift_box_qs.exists():
-            gift_box = gift_box_qs[0]
-            context = {"gift_box" : gift_box,}
-            return render(request , 'Gift_curating/gift_box_area.html' , context)
-        else :
-            messages.warning(request , 'you do not have an active gift box, please create')
-            return redirect('/')
-
-def create_gift_box(request):
-    if request.user.is_authenticated:
-        gift_box , created = GiftBox.objects.get_or_create( user = request.user ,
-                                                            ordered = False)
-        if created:
-            messages.success(request , f'Glamoury gift box for {request.user.username} has been created')
-            return redirect('core:gift_box')
-        else :
-            messages.warning(request , f'Glamoury gift box for {request.user.username} already exist')
-        return redirect('core:gift_box')
-    else :
-        messages.warning(request , 'please Log in first')
-        return redirect("account_login")
 
 
 
+
+# Cart System area
 def add_to_cart(request , slug):
-    form = QuantityForm(request.POST or none)
+    form = QuantityForm(request.POST or None)
     if form.is_valid():
         quantity = form.cleaned_data.get('quantity')
         
@@ -236,12 +203,12 @@ def update_cart_view(request , slug):
 
 def remove_form_cart(request , slug):
     order_qs = Order.objects.filter(    user = request.user ,
-                                            ordered = False)
+                                        ordered = False)
     if order_qs.exists():
         order = order_qs[0]
         orderitem = OrderItem.objects.get(  user = request.user , 
-                                                item__slug = slug,
-                                                ordered = False)
+                                            item__slug = slug,
+                                            ordered = False)
         order.orderitems.remove(orderitem)
         orderitem.delete()
         order.save()

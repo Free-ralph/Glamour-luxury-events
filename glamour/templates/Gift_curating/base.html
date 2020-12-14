@@ -18,9 +18,9 @@
             <li>Finally, add your custom "Glamoury gift box" to your cart for checkout, payment and delivery</li>
         </ul>
     {% if gift_box %}
-    <a class = "btn colorbg-secondary add-to-cart-btn w-25 m-auto" href = "{% url 'core:gift_box' %}"><i class="fas fa-gifts "><span class = "ml-2">COUNTINUE CURATING</span></i></a>
+    <a class = "btn colorbg-secondary add-to-cart-btn w-25 m-auto" href = "{% url 'gift:gift_box' %}"><i class="fas fa-gifts "><span class = "ml-2">COUNTINUE CURATING</span></i></a>
     {% else %}
-    <a class = "btn colorbg-secondary add-to-cart-btn w-25 m-auto" href = "{% url 'core:create_gift_box' %}"><i class="fas fa-gifts "><span class = "ml-2">CREATE GIFT BOX</span></i></a>
+    <a class = "btn colorbg-secondary add-to-cart-btn w-25 m-auto" href = "{% url 'gift:create_gift_box' %}"><i class="fas fa-gifts "><span class = "ml-2">CREATE GIFT BOX</span></i></a>
     {% endif %}  
     </div>
 </div>

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 # Create your models here.
 
 class Item(models.Model):
@@ -21,51 +22,6 @@ class Item(models.Model):
     def __str__(self):
         return self.title
 
-class AddOns(models.Model):
-    add_on_name = models.CharField(max_length=20)
-    price = models.FloatField()
-    
-    def __str__(self):
-        return self.add_on_name
-    
-class Trays(models.Model):
-    category = models.CharField(max_length=20)
-    tray_name = models.CharField(max_length=20)
-    price = models.FloatField()
-    food_items = models.TextField()
-    add_ons = models.ManyToManyField(AddOns)
-
-    class Meta:
-        verbose_name_plural = 'Trayes'
-    def __str__(self):
-        return self.tray_name
-
-class GiftItem(models.Model):
-    user = models.ForeignKey(User , on_delete = models.CASCADE)
-    quantity = models.IntegerField(default = 1)
-    ordered = models.BooleanField(default=False)
-    gift_item = models.ForeignKey(Item , on_delete = models.CASCADE)
-
-    def __str__(self):
-        return self.user.username 
-
-class GiftTray(models.Model):
-    user = models.ForeignKey(User , on_delete = models.CASCADE)
-    quantity = models.IntegerField(default = 1)
-    ordered = models.BooleanField(default=False)
-    gift_tray = models.ForeignKey(Trays , on_delete = models.CASCADE)
-
-class GiftBox(models.Model):
-    user = models.ForeignKey(User , on_delete = models.CASCADE )
-    reference = models.CharField(max_length=10 , blank=True, null=True)#TODO Remember remove null and black
-    ordered = models.BooleanField(default=False)
-    gift_item = models.ManyToManyField(GiftItem)
-
-    class Meta:
-        verbose_name_plural = 'GiftBoxes'
-    
-    def __str__(self):
-        return self.user.username
 
 class OrderItem(models.Model):
     user = models.ForeignKey(User , on_delete = models.CASCADE)
